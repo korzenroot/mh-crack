@@ -15,12 +15,12 @@ def patch(data: bytearray, signature: bytes, patch: bytes):
         return True
     return False
 
-print("-Downloading Mega Hack-")
+print("- Downloading Mega Hack -")
 with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/files/v9.1.3/absolllute.megahack.geode", headers={"User-Agent": ""})).read()), "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack.geode", "w") as patched_zipfile:
     print("Downloaded Mega Hack")
     for name in original_zipfile.namelist():
         if name == "absolllute.megahack.dll":
-            print("\n-Patching Mega Hack-")
+            print("\n- Patching Mega Hack -")
             data = bytearray(original_zipfile.read(name))
             patches = [
                 patch(data, rb"\x56\x57\x48\x83\xEC\x48\x48\x83\x79\x10\x40", b"\xB8\x01\x00\x00\x00\xC3"),
@@ -41,12 +41,12 @@ with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("h
         else:
             patched_zipfile.writestr(name, original_zipfile.read(name))
 
-print("\n-Creating license-")
+print("\n- Creating license -")
 with open("license", "w") as license_file:
     license_file.write(json.dumps({"data": base64.b64encode(json.dumps({"id": "", "guid2": "0E841FA5BFE5CE8FC91EB11ADD1DCEF694045BEEAFCF521BF4341D3997C1C219"}).encode()).decode(), "sig": "", "token": ""}))
     print("Created license")
 
-print("\n-Copying files-")
+print("\n- Copying files -")
 geode_dll_path = next(Path.home().rglob("Geode.dll"), None)
 if geode_dll_path:
     geode_mods_path = geode_dll_path.parent / "geode" / "mods"
