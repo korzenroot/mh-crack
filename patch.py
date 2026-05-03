@@ -16,7 +16,9 @@ def patch(data: bytearray, signature: bytes, patch: bytes):
     return False
 
 print("- Downloading Mega Hack -")
-with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/files/v9.1.3/absolllute.megahack.geode", headers = {"User-Agent": ""})).read()), "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack.geode", "w") as patched_zipfile:
+with urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/install.json", headers = {"User-Agent": ""})) as install_json:
+    latest_version = next(bundle["version"] for package in json.load(install_json)["packages"] for bundle in package["bundles"] if bundle.get("geode"))
+with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request(f"https://absolllute.com/api/mega_hack/v9/files/{latest_version}/absolllute.megahack.geode", headers = {"User-Agent": ""})).read()), "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack.geode", "w") as patched_zipfile:
     print("Downloaded Mega Hack")
     for name in original_zipfile.namelist():
         if name == "absolllute.megahack.dll":
