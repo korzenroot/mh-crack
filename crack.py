@@ -37,6 +37,7 @@ if game_path:
 
 with open("license", "w") as file:
     file.write(json.dumps({"data": base64.b64encode(json.dumps({"id":"","guid2":"0E841FA5BFE5CE8FC91EB11ADD1DCEF694045BEEAFCF521BF4341D3997C1C219"}).encode()).decode(), "sig": "", "token": ""}))
+
 localappdata_game_path = subprocess.check_output(["find", HOME, "-type", "d", "-path", "*AppData/Local/GeometryDash", "-print", "-quit"], text=True)
 if localappdata_game_path:
     license_path = Path(localappdata_game_path).parent / "absolllute.megahack"
