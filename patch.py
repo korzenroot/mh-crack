@@ -45,18 +45,20 @@ with open("license", "w") as license_file:
     license_file.write(json.dumps({"data": base64.b64encode(json.dumps({"id": "", "guid2": "0E841FA5BFE5CE8FC91EB11ADD1DCEF694045BEEAFCF521BF4341D3997C1C219"}).encode()).decode(), "sig": "", "token": ""}))
 
 print("\n-Copying files-")
-geode_mods_path = next(Path.home().rglob("geode/mods"))
-if geode_mods_path:
+geode_dll_path = next(Path.home().rglob("Geode.dll"), None)
+if geode_dll_path:
+    geode_mods_path = geode_dll_path.parent / "geode" / "mods"
+    geode_mods_path.mkdir(exist_ok=True)
     print(f"Copying patched Mega Hack to {geode_mods_path}")
     shutil.copy("absolllute.megahack.geode", geode_mods_path)
 else:
-    print("Failed to find geode/mods")
+    print("Failed to find Geode.dll")
 
-appdata_local_geometrydash_path = next(Path.home().rglob("AppData/Local/GeometryDash"))
+appdata_local_geometrydash_path = next(Path.home().rglob("AppData/Local/GeometryDash"), None)
 if appdata_local_geometrydash_path:
-    license_path = appdata_local_geometrydash_path.parent / "absolllute.megahack"
-    license_path.mkdir(exist_ok=True)
-    print(f"Copying license to {license_path}")
-    shutil.copy("license", license_path)
+    absolllute_megahack_path = appdata_local_geometrydash_path.parent / "absolllute.megahack"
+    absolllute_megahack_path.mkdir(exist_ok=True)
+    print(f"Copying license to {absolllute_megahack_path}")
+    shutil.copy("license", absolllute_megahack_path)
 else:
     print("Failed to find AppData/Local/GeometryDash")
