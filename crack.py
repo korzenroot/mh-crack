@@ -32,7 +32,7 @@ for path in Path.home().rglob("GeometryDash*"):
     if path.name == "GeometryDash.exe":
         mods_path = path.parent / "geode" / "mods"
         mods_path.mkdir(exist_ok=True)
-        shutil.copy("absolllute.megahack_cracked.geode", mods_path)
+        shutil.copy("absolllute.megahack.geode", mods_path)
     if path.parts[-3:] == ("AppData", "Local", "GeometryDash"):
         license_path = path.parent / "absolllute.megahack"
         license_path.mkdir(exist_ok=True)
