@@ -68,6 +68,5 @@ if appdata_local_geometrydash_path:
     license_path.mkdir(exist_ok=True)
     print(f"Copying license to {license_path.absolute()}")
     shutil.copy("license", license_path)
-    found_license_path = True
 else:
     print("Failed to find AppData/Local/GeometryDash")
