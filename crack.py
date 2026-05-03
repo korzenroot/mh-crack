@@ -1,18 +1,18 @@
+import urllib.request
+import re
+import zipfile
 import json
 import base64
-import zipfile
-import urllib.request
 
 with open("absolllute.megahack_original.geode", "wb") as file:
     file.write(urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/files/v9.1.3/absolllute.megahack.geode", headers={"User-Agent": ""})).read())
 
 def patch(data: bytearray, pattern: str, repl: str):
-    pat = [None if x == "?" else int(x, 16) for x in pattern.split()]
+    pat = b"".join(b"." if byte == "?" else re.escape(bytes.fromhex(byte)) for byte in pattern.split())
     rep = bytes.fromhex(repl)
-    for i in range(len(data) - len(pat) + 1):
-        if all(p is None or data[i+j] == p for j, p in enumerate(pat)):
-            data[i:i+len(rep)] = rep
-            break
+    match = re.search(pat, data, re.DOTALL)
+    if match:
+        data[match.start():match.start()+len(rep)] = rep
 
 with zipfile.ZipFile("absolllute.megahack_original.geode", "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack_cracked.geode", "w") as cracked_zipfile:
     for name in original_zipfile.namelist():
