@@ -1,11 +1,10 @@
 import urllib.request
 import re
 import zipfile
-import subprocess
-from pathlib import Path
-import shutil
 import json
 import base64
+from pathlib import Path
+import shutil
 
 with open("absolllute.megahack_original.geode", "wb") as file:
     file.write(urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/files/v9.1.3/absolllute.megahack.geode", headers={"User-Agent": ""})).read())
@@ -28,18 +27,15 @@ with zipfile.ZipFile("absolllute.megahack_original.geode", "r") as original_zipf
         else:
             cracked_zipfile.writestr(name, original_zipfile.read(name))
 
-HOME = str(Path.home())
-game_path = subprocess.check_output(["find", HOME, "-type", "f", "-name", "GeometryDash.exe", "-print", "-quit"], text=True)
-if game_path:
-    mods_path = Path(game_path).parent / "geode" / "mods"
-    mods_path.mkdir(exist_ok=True)
-    shutil.copy("absolllute.megahack_cracked.geode", mods_path)
-
 with open("license", "w") as file:
     file.write(json.dumps({"data": base64.b64encode(json.dumps({"id":"","guid2":"0E841FA5BFE5CE8FC91EB11ADD1DCEF694045BEEAFCF521BF4341D3997C1C219"}).encode()).decode(), "sig": "", "token": ""}))
 
-localappdata_game_path = subprocess.check_output(["find", HOME, "-type", "d", "-path", "*AppData/Local/GeometryDash", "-print", "-quit"], text=True)
-if localappdata_game_path:
-    license_path = Path(localappdata_game_path).parent / "absolllute.megahack"
-    license_path.mkdir(exist_ok=True)
-    shutil.copy("license", license_path)
+for path in Path.home().rglob("GeometryDash*"):
+    if path.name == "GeometryDash.exe":
+        mods_path = path.parent / "geode" / "mods"
+        mods_path.mkdir(exist_ok=True)
+        shutil.copy("absolllute.megahack_cracked.geode", mods_path)
+    if path.parts[-3:] == ("AppData", "Local", "GeometryDash"):
+        license_path = path.parent / "absolllute.megahack"
+        license_path.mkdir(exist_ok=True)
+        shutil.copy("license", license_path)
