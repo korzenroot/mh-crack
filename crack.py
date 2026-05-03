@@ -15,12 +15,11 @@ def patch(data: bytearray, signature: bytes, patch: bytes):
         return True
     return False
 
-print("Downloading Mega Hack...")
+print("Downloading Mega Hack")
 with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/files/v9.1.3/absolllute.megahack.geode", headers={"User-Agent": ""})).read()), "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack.geode", "w") as cracked_zipfile:
-    print("Done")
     for name in original_zipfile.namelist():
         if name == "absolllute.megahack.dll":
-            print("\nPatching Mega Hack...")
+            print("\nPatching Mega Hack")
             data = bytearray(original_zipfile.read(name))
             patches = [
                 patch(data, rb"\x56\x57\x48\x83\xEC\x48\x48\x83\x79\x10\x40", b"\xB8\x01\x00\x00\x00\xC3"),
@@ -31,33 +30,44 @@ with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("h
             failed = False
             for i, found in enumerate(patches, start=1):
                 if not found:
-                    print(f"Signature for patch {i} not found")
+                    print(f"Failed to find signature for patch {i}")
                     failed = True
                 else:
                     print(f"Patch {i} completed successfully")
             if failed:
-                print("Failed")
                 exit(1)
             cracked_zipfile.writestr(name, bytes(data))
         else:
             cracked_zipfile.writestr(name, original_zipfile.read(name))
-    print("Done")
 
-print("\nCreating license...")
+print("\nCreating license")
 with open("license", "w") as license_file:
     license_file.write(json.dumps({"data": base64.b64encode(json.dumps({"id": "", "guid2": "0E841FA5BFE5CE8FC91EB11ADD1DCEF694045BEEAFCF521BF4341D3997C1C219"}).encode()).decode(), "sig": "", "token": ""}))
-    print("Done")
 
+print("\nCopying files")
+geometrydash_exe_path = None
+appdata_local_geometrydash_path = None
 for path in Path.home().rglob("GeometryDash*"):
     if path.name == "GeometryDash.exe":
-        mods_path = path.parent / "geode" / "mods"
-        print(f"\nCopying patched Mega Hack to {mods_path.absolute()}...")
-        mods_path.mkdir(exist_ok=True)
-        shutil.copy("absolllute.megahack.geode", mods_path)
-        print("Done")
+        print(f"Found GeometryDash.exe at {path.absolute()}")
+        geometrydash_exe_path = path
     if path.parts[-3:] == ("AppData", "Local", "GeometryDash"):
-        license_path = path.parent / "absolllute.megahack"
-        print(f"\nCopying license to {license_path.absolute()}...")
-        license_path.mkdir(exist_ok=True)
-        shutil.copy("license", license_path)
-        print("Done")
+        print(f"Found AppData/Local/GeometryDash at {path.absolute()}")
+        appdata_local_geometrydash_path = path
+
+if geometrydash_exe_path:
+    mods_path = geometrydash_exe_path.parent / "geode" / "mods"
+    mods_path.mkdir(exist_ok=True)
+    print(f"Copying patched Mega Hack to {mods_path.absolute()}")
+    shutil.copy("absolllute.megahack.geode", mods_path)
+else:
+    print("Failed to find GeometryDash.exe")
+
+if appdata_local_geometrydash_path:
+    license_path = appdata_local_geometrydash_path.parent / "absolllute.megahack"
+    license_path.mkdir(exist_ok=True)
+    print(f"Copying license to {license_path.absolute()}")
+    shutil.copy("license", license_path)
+    found_license_path = True
+else:
+    print("Failed to find AppData/Local/GeometryDash")
