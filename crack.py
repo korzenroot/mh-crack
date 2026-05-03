@@ -25,8 +25,8 @@ with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("h
         else:
             cracked_zipfile.writestr(name, original_zipfile.read(name))
 
-with open("license", "w") as file:
-    file.write(json.dumps({"data": base64.b64encode(json.dumps({"id": "", "guid2": "0E841FA5BFE5CE8FC91EB11ADD1DCEF694045BEEAFCF521BF4341D3997C1C219"}).encode()).decode(), "sig": "", "token": ""}))
+with open("license", "w") as license_file:
+    license_file.write(json.dumps({"data": base64.b64encode(json.dumps({"id": "", "guid2": "0E841FA5BFE5CE8FC91EB11ADD1DCEF694045BEEAFCF521BF4341D3997C1C219"}).encode()).decode(), "sig": "", "token": ""}))
 
 for path in Path.home().rglob("GeometryDash*"):
     if path.name == "GeometryDash.exe":
