@@ -33,7 +33,7 @@ with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("h
                     print(f"Failed to find signature for patch {i}")
                     failed = True
                 else:
-                    print(f"Patch {i} completed successfully")
+                    print(f"Patch {i} applied successfully")
             if failed:
                 exit(1)
             patched_zipfile.writestr(name, bytes(data))
