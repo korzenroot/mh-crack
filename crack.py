@@ -16,7 +16,7 @@ def patch(data: bytearray, signature: bytes, patch: bytes):
     return False
 
 print("Downloading Mega Hack")
-with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/files/v9.1.3/absolllute.megahack.geode", headers={"User-Agent": ""})).read()), "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack.geode", "w") as cracked_zipfile:
+with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/files/v9.1.3/absolllute.megahack.geode", headers={"User-Agent": ""})).read()), "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack.geode", "w") as patched_zipfile:
     for name in original_zipfile.namelist():
         if name == "absolllute.megahack.dll":
             print("\nPatching Mega Hack")
@@ -36,9 +36,9 @@ with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("h
                     print(f"Patch {i} completed successfully")
             if failed:
                 exit(1)
-            cracked_zipfile.writestr(name, bytes(data))
+            patched_zipfile.writestr(name, bytes(data))
         else:
-            cracked_zipfile.writestr(name, original_zipfile.read(name))
+            patched_zipfile.writestr(name, original_zipfile.read(name))
 
 print("\nCreating license")
 with open("license", "w") as license_file:
