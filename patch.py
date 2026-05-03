@@ -51,7 +51,7 @@ for path in Path.home().rglob("GeometryDash*"):
     if path.name == "GeometryDash.exe":
         print(f"Found GeometryDash.exe at {path.absolute()}")
         geometrydash_exe_path = path
-    if path.parts[-3:] == ("AppData", "Local", "GeometryDash"):
+    elif path.parts[-3:] == ("AppData", "Local", "GeometryDash"):
         print(f"Found AppData/Local/GeometryDash at {path.absolute()}")
         appdata_local_geometrydash_path = path
 
