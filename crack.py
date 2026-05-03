@@ -11,11 +11,7 @@ def patch(data: bytearray, pattern: str, repl: str) -> bool:
     rep = bytes(int(x, 16) for x in repl.split())
     for i in range(len(data) - len(pat) + 1):
         if all(p is None or data[i+j] == p for j, p in enumerate(pat)):
-            if i + len(rep) > len(data):
-                return False
             data[i:i+len(rep)] = rep
-            return True
-    return False
 
 with zipfile.ZipFile("absolllute.megahack_original.geode", "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack_cracked.geode", "w") as cracked_zipfile:
     for name in original_zipfile.namelist():
