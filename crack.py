@@ -10,7 +10,8 @@ with open("absolllute.megahack_original.geode", "wb") as file:
 def patch(data: bytearray, signature: bytes, patch: bytes):
     match = re.search(signature, data, re.DOTALL)
     if match:
-        data[match.start():match.start()+len(patch)] = patch
+        start = match.start()
+        data[start:start + len(patch)] = patch
 
 with zipfile.ZipFile("absolllute.megahack_original.geode", "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack_cracked.geode", "w") as cracked_zipfile:
     for name in original_zipfile.namelist():
