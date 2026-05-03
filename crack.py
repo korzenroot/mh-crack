@@ -6,9 +6,9 @@ import urllib.request
 with open("absolllute.megahack_original.geode", "wb") as file:
     file.write(urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/files/v9.1.3/absolllute.megahack.geode", headers={"User-Agent": ""})).read())
 
-def patch(data: bytearray, pattern: str, repl: str) -> bool:
+def patch(data: bytearray, pattern: str, repl: str):
     pat = [None if x == "?" else int(x, 16) for x in pattern.split()]
-    rep = bytes(int(x, 16) for x in repl.split())
+    rep = bytes.fromhex(repl)
     for i in range(len(data) - len(pat) + 1):
         if all(p is None or data[i+j] == p for j, p in enumerate(pat)):
             data[i:i+len(rep)] = rep
