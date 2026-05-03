@@ -1,7 +1,7 @@
 import re
+import zipfile
 import io
 import urllib.request
-import zipfile
 import json
 import base64
 from pathlib import Path
