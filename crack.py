@@ -7,21 +7,19 @@ import base64
 with open("absolllute.megahack_original.geode", "wb") as file:
     file.write(urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/files/v9.1.3/absolllute.megahack.geode", headers={"User-Agent": ""})).read())
 
-def patch(data: bytearray, pattern: str, repl: str):
-    pat = b"".join(b"." if byte == "?" else re.escape(bytes.fromhex(byte)) for byte in pattern.split())
-    rep = bytes.fromhex(repl)
-    match = re.search(pat, data, re.DOTALL)
+def patch(data: bytearray, signature: bytes, patch: bytes):
+    match = re.search(signature, data, re.DOTALL)
     if match:
-        data[match.start():match.start()+len(rep)] = rep
+        data[match.start():match.start()+len(patch)] = patch
 
 with zipfile.ZipFile("absolllute.megahack_original.geode", "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack_cracked.geode", "w") as cracked_zipfile:
     for name in original_zipfile.namelist():
         if name == "absolllute.megahack.dll":
             data = bytearray(original_zipfile.read(name))
-            patch(data, "56 57 48 83 EC 48 48 83 79 10 40", "B8 01 00 00 00 C3")
-            patch(data, "55 41 56 56 57 53 48 83 EC 70 48 8D 6C 24 70 48 C7 45 F8 FE FF FF FF 48 83 39 00", "B8 01 00 00 00 C3")
-            patch(data, "E8 ? ? ? ? 48 83 7F 18 10 72", "B8 00 00 00 00")
-            patch(data, "55 41 57 41 56 56 57 53 48 81 EC 48 01 00 00 48 8D AC 24 80 00 00 00 48 C7 85 C0 00 00 00 FE FF FF FF 48 89 D7", "C3")
+            patch(data, rb"\x56\x57\x48\x83\xEC\x48\x48\x83\x79\x10\x40", b"\xB8\x01\x00\x00\x00\xC3")
+            patch(data, rb"\x55\x41\x56\x56\x57\x53\x48\x83\xEC\x70\x48\x8D\x6C\x24\x70\x48\xC7\x45\xF8\xFE\xFF\xFF\xFF\x48\x83\x39\x00", b"\xB8\x01\x00\x00\x00\xC3")
+            patch(data, rb"\xE8....\x48\x83\x7F\x18\x10\x72", b"\xB8\x00\x00\x00\x00")
+            patch(data, rb"\x55\x41\x57\x41\x56\x56\x57\x53\x48\x81\xEC\x48\x01\x00\x00\x48\x8D\xAC\x24\x80\x00\x00\x00\x48\xC7\x85\xC0\x00\x00\x00\xFE\xFF\xFF\xFF\x48\x89\xD7", b"\xC3")
             cracked_zipfile.writestr(name, bytes(data))
         else:
             cracked_zipfile.writestr(name, original_zipfile.read(name))
