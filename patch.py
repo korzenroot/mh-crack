@@ -47,14 +47,14 @@ with open("license", "w") as license_file:
     print("Created license")
 
 print("\n- Copying files -")
-geode_dll_path = next(Path.home().rglob("Geode.dll"), None)
-if geode_dll_path:
-    geode_mods_path = geode_dll_path.parent / "geode" / "mods"
+geometrydash_exe_path = next(Path.home().rglob("GeometryDash.exe"), None)
+if geometrydash_exe_path:
+    geode_mods_path = geometrydash_exe_path.parent / "geode" / "mods"
     geode_mods_path.mkdir(exist_ok = True)
     shutil.copy("absolllute.megahack.geode", geode_mods_path)
     print(f"Copied patched Mega Hack to {geode_mods_path}")
 else:
-    print("Failed to find Geode.dll")
+    print("Failed to find GeometryDash.exe")
 
 appdata_local_geometrydash_path = next(Path.home().rglob("AppData/Local/GeometryDash"), None)
 if appdata_local_geometrydash_path:
