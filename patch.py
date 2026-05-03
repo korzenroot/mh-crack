@@ -29,7 +29,7 @@ with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request("h
                 patch(data, rb"\x55\x41\x57\x41\x56\x56\x57\x53\x48\x81\xEC\x48\x01\x00\x00\x48\x8D\xAC\x24\x80\x00\x00\x00\x48\xC7\x85\xC0\x00\x00\x00\xFE\xFF\xFF\xFF\x48\x89\xD7", b"\xC3"),
             ]
             failed = False
-            for i, found in enumerate(patches, start=1):
+            for i, found in enumerate(patches, start = 1):
                 if not found:
                     print(f"Failed to find signature for patch {i}")
                     failed = True
@@ -50,7 +50,7 @@ print("\n- Copying files -")
 geode_dll_path = next(Path.home().rglob("Geode.dll"), None)
 if geode_dll_path:
     geode_mods_path = geode_dll_path.parent / "geode" / "mods"
-    geode_mods_path.mkdir(exist_ok=True)
+    geode_mods_path.mkdir(exist_ok = True)
     shutil.copy("absolllute.megahack.geode", geode_mods_path)
     print(f"Copied patched Mega Hack to {geode_mods_path}")
 else:
@@ -59,7 +59,7 @@ else:
 appdata_local_geometrydash_path = next(Path.home().rglob("AppData/Local/GeometryDash"), None)
 if appdata_local_geometrydash_path:
     absolllute_megahack_path = appdata_local_geometrydash_path.parent / "absolllute.megahack"
-    absolllute_megahack_path.mkdir(exist_ok=True)
+    absolllute_megahack_path.mkdir(exist_ok = True)
     shutil.copy("license", absolllute_megahack_path)
     print(f"Copied license to {absolllute_megahack_path}")
 else:
