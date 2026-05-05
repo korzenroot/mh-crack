@@ -4,6 +4,7 @@ import json
 import zipfile
 import io
 import base64
+import sys
 from pathlib import Path
 import shutil
 
@@ -49,21 +50,22 @@ with open("license", "w") as license_file:
     license_file.write(json.dumps({"data": base64.b64encode(json.dumps({"id": "", "guid2": "0E841FA5BFE5CE8FC91EB11ADD1DCEF694045BEEAFCF521BF4341D3997C1C219"}).encode()).decode(), "sig": "", "token": ""}))
     print("Created license")
 
-print("\n- Copying files -")
-geometrydash_exe_path = next(Path.home().rglob("GeometryDash.exe"), None)
-if geometrydash_exe_path:
-    geode_mods_path = geometrydash_exe_path.parent / "geode" / "mods"
-    geode_mods_path.mkdir(exist_ok = True)
-    shutil.copy("absolllute.megahack.geode", geode_mods_path)
-    print(f"Copied patched Mega Hack to {geode_mods_path}")
-else:
-    print("Failed to find GeometryDash.exe")
+if "--install" in sys.argv:
+    print("\n- Installing patched Mega Hack -")
+    geometrydash_exe_path = next(Path.home().rglob("GeometryDash.exe"), None)
+    if geometrydash_exe_path:
+        geode_mods_path = geometrydash_exe_path.parent / "geode" / "mods"
+        geode_mods_path.mkdir(exist_ok = True)
+        shutil.copy("absolllute.megahack.geode", geode_mods_path)
+        print(f"Copied patched Mega Hack to {geode_mods_path}")
+    else:
+        print("Failed to find GeometryDash.exe")
 
-appdata_local_geometrydash_path = next(Path.home().rglob("AppData/Local/GeometryDash"), None)
-if appdata_local_geometrydash_path:
-    absolllute_megahack_path = appdata_local_geometrydash_path.parent / "absolllute.megahack"
-    absolllute_megahack_path.mkdir(exist_ok = True)
-    shutil.copy("license", absolllute_megahack_path)
-    print(f"Copied license to {absolllute_megahack_path}")
-else:
-    print("Failed to find AppData/Local/GeometryDash")
+    appdata_local_geometrydash_path = next(Path.home().rglob("AppData/Local/GeometryDash"), None)
+    if appdata_local_geometrydash_path:
+        absolllute_megahack_path = appdata_local_geometrydash_path.parent / "absolllute.megahack"
+        absolllute_megahack_path.mkdir(exist_ok = True)
+        shutil.copy("license", absolllute_megahack_path)
+        print(f"Copied license to {absolllute_megahack_path}")
+    else:
+        print("Failed to find AppData/Local/GeometryDash")
