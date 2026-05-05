@@ -16,14 +16,14 @@ def patch(data: bytearray, signature: bytes, patch: bytes):
         return True
     return False
 
-print("- Downloading Mega Hack -")
 with urllib.request.urlopen(urllib.request.Request("https://absolllute.com/api/mega_hack/v9/install.json", headers = {"User-Agent": ""})) as install_json:
-    latest_version = next(bundle["version"] for package in json.load(install_json)["packages"] for bundle in package["bundles"] if bundle.get("geode"))
-with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request(f"https://absolllute.com/api/mega_hack/v9/files/{latest_version}/absolllute.megahack.geode", headers = {"User-Agent": ""})).read()), "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack.geode", "w") as patched_zipfile:
-    print("Downloaded Mega Hack")
+    version = next(bundle["version"] for package in json.load(install_json)["packages"] for bundle in package["bundles"] if bundle.get("geode"))
+print(f"- Downloading Mega Hack {version} -")
+with zipfile.ZipFile(io.BytesIO(urllib.request.urlopen(urllib.request.Request(f"https://absolllute.com/api/mega_hack/v9/files/{version}/absolllute.megahack.geode", headers = {"User-Agent": ""})).read()), "r") as original_zipfile, zipfile.ZipFile("absolllute.megahack.geode", "w") as patched_zipfile:
+    print(f"Downloaded Mega Hack {version}")
     for name in original_zipfile.namelist():
         if name == "absolllute.megahack.dll":
-            print("\n- Patching Mega Hack -")
+            print(f"\n- Patching Mega Hack {version} -")
             data = bytearray(original_zipfile.read(name))
             patches = [
                 # xref "LICENSE"
@@ -51,13 +51,13 @@ with open("license", "w") as license_file:
     print("Created license")
 
 if "--install" in sys.argv:
-    print("\n- Installing patched Mega Hack -")
+    print(f"\n- Installing patched Mega Hack {version} -")
     geometrydash_exe_path = next(Path.home().rglob("GeometryDash.exe"), None)
     if geometrydash_exe_path:
         geode_mods_path = geometrydash_exe_path.parent / "geode" / "mods"
         geode_mods_path.mkdir(exist_ok = True)
         shutil.copy("absolllute.megahack.geode", geode_mods_path)
-        print(f"Copied patched Mega Hack to {geode_mods_path}")
+        print(f"Copied patched Mega Hack {version} to {geode_mods_path}")
     else:
         print("Failed to find GeometryDash.exe")
 
